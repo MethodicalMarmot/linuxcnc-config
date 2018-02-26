@@ -1,0 +1,64 @@
+# Include your customized HAL commands here
+# This file will not be overwritten when you run stepconf again
+
+# https://goo.gl/Qi1osk
+# loadrt pwmgen output_type=0
+# addf pwmgen.update servo-thread
+# addf pwmgen.make-pulses base-thread
+# net spindle-speed-cmd motion.spindle-speed-out => pwmgen.0.value
+# net spindle-on motion.spindle-on => pwmgen.0.enable
+# net spindle-pwm pwmgen.0.pwm => parport.0.pin-09-out
+# # Set the spindle's top speed in RPM
+# setp pwmgen.0.scale 30000
+
+
+### motion-probe calculation
+# expression = (i0 and i1) or (not i0 and not i1)
+#in: i4 i3 i2 i1 i0 out weight
+# 0:  0  0  0  0  0  1   0x1
+# 1:  0  0  0  0  1  0
+# 2:  0  0  0  1  0  0
+# 3:  0  0  0  1  1  1   0x8
+# setp lut5.N.function 0x9
+addf lut5.0 servo-thread
+setp lut5.0.function 0x9
+net 3d-probe-in => lut5.0.in-0
+net tool-probe-in => lut5.0.in-1
+net all-probes motion.probe-input <= lut5.0.out
+
+
+net user-enable <= iocontrol.0.user-enable-out
+net estop-reset <= iocontrol.0.user-request-enable
+
+### estop-out calculation
+# expression = (i0 and i1 and not i2) or (i0 and not i1 and not i2) or (not i0 and i1 and i2) or (not i0 and i1 and not i2) or (not i0 and not i1 and not i2)
+#in: i4 i3 i2 i1 i0 out weight
+# 0:  0  0  0  0  0  1   0x1
+# 1:  0  0  0  0  1  1   0x2
+# 2:  0  0  0  1  0  1   0x4
+# 3:  0  0  0  1  1  1   0x8
+# 4:  0  0  1  0  0  0
+# 5:  0  0  1  0  1  0
+# 6:  0  0  1  1  0  1   0x40
+# 7:  0  0  1  1  1  0
+# setp lut5.N.function 0x4f
+addf lut5.1 servo-thread
+setp lut5.1.function 0x4f
+net estop-reset => lut5.1.in-0
+net estop-ext => lut5.1.in-1
+net user-enable => lut5.1.in-2
+net estop-out <= lut5.1.out
+
+### emc-enable-int calculation
+# expression = (not i0 and i1)
+#in: i4 i3 i2 i1 i0 out weight
+# 0:  0  0  0  0  0  0
+# 1:  0  0  0  0  1  0
+# 2:  0  0  0  1  0  1   0x4
+# 3:  0  0  0  1  1  0
+addf lut5.2 servo-thread
+setp lut5.2.function 0x4
+net estop-ext => lut5.2.in-0
+net user-enable => lut5.2.in-1
+net enable-in iocontrol.0.emc-enable-in <= lut5.2.out
+

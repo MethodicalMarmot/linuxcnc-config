@@ -1,0 +1,70 @@
+###################################################################
+#        moccapy_postgui.hal file from Norbert Schechner          #
+###################################################################
+
+loadrt abs names=abs_spindle_feedback
+addf abs_spindle_feedback servo-thread
+
+net spindle-speed-limited  =>  abs_spindle_feedback.in
+net spindle-abs  abs_spindle_feedback.out  =>  gmoccapy.spindle_feedback_bar
+net spindle-at-speed      gmoccapy.spindle_at_speed_led
+
+net tooloffset-x  gmoccapy.tooloffset-x  <=  motion.tooloffset.x
+net tooloffset-z  gmoccapy.tooloffset-z  <=  motion.tooloffset.z
+
+net tool-change gmoccapy.toolchange-change <= iocontrol.0.tool-change
+net tool-changed gmoccapy.toolchange-changed <= iocontrol.0.tool-changed
+net tool-prep-number gmoccapy.toolchange-number <= iocontrol.0.tool-prep-number
+net tool-prep-loop iocontrol.0.tool-prepare <= iocontrol.0.tool-prepared
+
+# Settings changing 
+net  pdnt.axis.3.jog-counts         whb.axis.3.jog-counts         gmoccapy.feed.feed-override.counts
+net  pdnt.axis.3.jog-enable         whb.axis.3.jog-enable         gmoccapy.feed.feed-override.count-enable
+
+net  pdnt.axis.4.jog-counts         whb.axis.4.jog-counts         gmoccapy.spindle.spindle-override.counts
+net  pdnt.axis.4.jog-enable         whb.axis.4.jog-enable         gmoccapy.spindle.spindle-override.count-enable
+
+net  pdnt.axis.5.jog-counts         whb.axis.5.jog-counts         gmoccapy.jog.jog-velocity.counts
+net  pdnt.axis.5.jog-enable         whb.axis.5.jog-enable         gmoccapy.jog.jog-velocity.count-enable
+
+# Feedback to whb
+net pdnt.gmoccapy.spc_feed.value     gmoccapy.spc_feed.value     whb.halui.axis.3.pos-feedback  whb.halui.axis.3.pos-relative
+net pdnt.gmoccapy.spc_spindle.value  gmoccapy.spc_spindle.value  whb.halui.axis.4.pos-feedback  whb.halui.axis.4.pos-relative
+net pdnt.gmoccapy.spc_jog_vel.value  gmoccapy.spc_jog_vel.value  whb.halui.axis.5.pos-feedback  whb.halui.axis.5.pos-relative
+net pdnt.is-absolute-dro            gmoccapy.is-dro-in-absolute-position    whb.halui.mode.is-dro-in-absolute-position
+
+
+loadrt or2 names=or2.continuos
+loadrt not names=not.turtle
+
+addf or2.continuos              servo-thread
+addf not.turtle                 servo-thread
+
+
+# continuous or step mode
+net   jog_scale         joghelper.jog.axis.jog-scale           gmoccapy.jog.jog-increment
+net   jog_velocity      joghelper.jog.axis.jog-velocity        gmoccapy.spc_jog_vel.scaled-value
+net   counts.0           joghelper.jog.axis.0.jog-counts         whb.axis.0.jog-counts
+net   increasing.0           joghelper.jog.axis.0.jog-increasing         whb.axis.0.jog-increasing
+net   decreasing.0           joghelper.jog.axis.0.jog-decreasing         whb.axis.0.jog-decreasing
+net   counts.1           joghelper.jog.axis.1.jog-counts         whb.axis.1.jog-counts
+net   increasing.1           joghelper.jog.axis.1.jog-increasing         whb.axis.1.jog-increasing
+net   decreasing.1           joghelper.jog.axis.1.jog-decreasing         whb.axis.1.jog-decreasing
+net   counts.2           joghelper.jog.axis.2.jog-counts         whb.axis.2.jog-counts
+net   increasing.2           joghelper.jog.axis.2.jog-increasing         whb.axis.2.jog-increasing
+net   decreasing.2           joghelper.jog.axis.2.jog-decreasing         whb.axis.2.jog-decreasing
+
+
+net selected0001    whb.halui.feed.selected-0.001          gmoccapy.jog.jog-inc-4
+net selected001     whb.halui.feed.selected-0.01           gmoccapy.jog.jog-inc-3
+net selected01      whb.halui.feed.selected-0.1            gmoccapy.jog.jog-inc-2
+net selected1       whb.halui.feed.selected-1.0            gmoccapy.jog.jog-inc-1
+
+# select continuous mode
+net selected60      whb.halui.feed.selected-60             or2.continuos.in0
+net selected100     whb.halui.feed.selected-100            or2.continuos.in1
+net continuous_selected or2.continuos.out                  gmoccapy.jog.jog-inc-0
+
+net selected100     =>                                     not.turtle.in
+net not_turtle      not.turtle.out                         gmoccapy.jog.turtle-jog
+

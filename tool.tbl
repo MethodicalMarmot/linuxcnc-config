@@ -1,0 +1,6 @@
+T0 P0 ;No tool 
+T3 P3 D4.000000 Z-4.008300 ;4mm endmill 
+T9 P9 D10.000000 Z+8.894300 ;10mm endmill 
+T18 P18 D6.000000 Z-10.730800 ;6mm ball endmill 
+T2 P2 D3.000000 Z-55.794666 ;3mm endmill 
+T8 P8 D9.000000 Z-42.464696 ;9mm endmill 

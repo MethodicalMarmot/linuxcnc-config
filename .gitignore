@@ -1,0 +1,5 @@
+autosave.halscope
+linuxcnc.var
+*.bak
+*.sw?
+ncam/scripts/ncam.ngc

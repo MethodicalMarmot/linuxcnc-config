@@ -95,5 +95,5 @@ use_toolmeasurement = True
 blockheight = 70.2
 scale_rapid_override = 1
 reload_tool = True
-tool_in_spindle = 8
+tool_in_spindle = 0
 

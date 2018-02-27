@@ -104,3 +104,6 @@ net  pdnt.axis.z.pos-feedback          halui.axis.z.pos-feedback        whb.halu
 net  pdnt.axis.z.pos-relative          halui.axis.z.pos-relative        whb.halui.axis.2.pos-relative     
 
 
+net  enablex  			       whb.axis.0.jog-enable 	 	halui.axis.x.select
+net  enabley  			       whb.axis.1.jog-enable 	 	halui.axis.y.select
+net  enablez  			       whb.axis.2.jog-enable 	 	halui.axis.z.select

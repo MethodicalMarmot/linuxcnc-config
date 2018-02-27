@@ -1,7 +1,7 @@
 # load the user space component
 loadusr -W xhc-whb04b-6 -n -H [XHC_WHB04B_6_CONFIG]COMPONENT_ARGUMENTS
 
-loadusr jog-helper
+loadusr joghelper
 
 # Connect emergency stop signals
 net  pdnt.machine.is-on             halui.machine.is-on           whb.halui.machine.is-on
@@ -59,11 +59,9 @@ net pdnt.button.fn                  whb.button.fn
 #halui.TODO, eventually mdi-command
 net  pdnt.button.probe-z            whb.button.probe-z           halui.mdi-command-02
 
-# unused, just exposes pendant interna
-net  pdnt.button.mode-continuous    whb.button.mode-continuous
-
-# unused, just exposes pendant interna
-net  pdnt.button.mode-step          whb.button.mode-step
+# Zero buttons
+net  pdnt.button.mode-continuous    whb.button.mode-continuous   halui.mdi-command-08
+net  pdnt.button.mode-step          whb.button.mode-step         halui.mdi-command-09
 
 # Connect spindle related signals
 net  spindle.is-on                     whb.halui.spindle.is-on

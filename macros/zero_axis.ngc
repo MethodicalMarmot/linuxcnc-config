@@ -1,0 +1,17 @@
+o<zero_axis> sub
+
+(#1 - tool offset direction)
+
+#<tool-dia> = [#1 * #<_hal[gmoccapy.tool-diameter]> / 2]
+
+o102 if [#<_hal[halui.axis.x.is-selected]> EQ 1]
+  G10 L20 P0 X[#<tool-dia>]
+o102 elseif [#<_hal[halui.axis.y.is-selected]> EQ 1]
+  G10 L20 P0 Y[#<tool-dia>]
+o102 elseif [#<_hal[halui.axis.z.is-selected]> EQ 1]
+  G10 L20 P0 Z0
+o102 else
+  (msg, Select axis)
+o102 endif
+
+o<change> endsub [1]

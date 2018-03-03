@@ -68,6 +68,11 @@ net continuous_selected or2.continuos.out                  gmoccapy.jog.jog-inc-
 net selected100     =>                                     not.turtle.in
 net not_turtle      not.turtle.out                         gmoccapy.jog.turtle-jog
 
-# unused, just exposes pendant interna
+# clear message
 net pdnt.button.fn                  whb.button.fn          gmoccapy.delete-message
+
+# select axis in gmoccapy
+net  enablex               whb.axis.0.jog-enable    halui.axis.x.select
+net  enabley               whb.axis.1.jog-enable    halui.axis.y.select
+net  enablez               whb.axis.2.jog-enable    halui.axis.z.select
 

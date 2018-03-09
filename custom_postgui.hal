@@ -72,7 +72,7 @@ net not_turtle      not.turtle.out                         gmoccapy.jog.turtle-j
 net pdnt.button.fn                  whb.button.fn          gmoccapy.delete-message
 
 # select axis in gmoccapy
-net  enablex        gmoccapy.jog.axis.x-selected # halui.axis.x.select
-net  enabley        gmoccapy.jog.axis.y-selected # halui.axis.y.select
-net  enablez        gmoccapy.jog.axis.z-selected # halui.axis.z.select
+net  enablex               gmoccapy.jog.axis.x-selected
+net  enabley               gmoccapy.jog.axis.y-selected
+net  enablez               gmoccapy.jog.axis.z-selected
 

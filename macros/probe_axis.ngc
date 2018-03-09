@@ -1,0 +1,29 @@
+o<probe_axis> sub
+
+(#1 - probe direction)
+
+#<direction> = [#1]
+
+o102 if [#<_hal[halui.axis.x.is-selected]> EQ 1]
+  o103 if [#<direction> GT 0]
+    O<xplus> call
+  o103 elseif [#<direction> LT 0]
+    O<xminus> call
+  o103 endif
+o102 elseif [#<_hal[halui.axis.y.is-selected]> EQ 1]
+  o103 if [#<direction> GT 0]
+    O<yplus> call
+  o103 elseif [#<direction> LT 0]
+    O<yminus> call
+  o103 endif
+o102 elseif [#<_hal[halui.axis.z.is-selected]> EQ 1]
+  o103 if [#<direction> GT 0]
+    O<zplus> call
+  o103 elseif [#<direction> LT 0]
+    O<zminus> call
+  o103 endif
+o102 else
+  (msg, Select axis)
+o102 endif
+
+o<change> endsub [1]

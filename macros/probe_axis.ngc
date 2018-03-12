@@ -17,11 +17,7 @@ o102 elseif [#<_hal[halui.axis.y.is-selected]> EQ 1]
     O<yminus> call
   o103 endif
 o102 elseif [#<_hal[halui.axis.z.is-selected]> EQ 1]
-  o103 if [#<direction> GT 0]
-    O<zplus> call
-  o103 elseif [#<direction> LT 0]
-    O<zminus> call
-  o103 endif
+  O<down> call
 o102 else
   (msg, Select axis)
 o102 endif
